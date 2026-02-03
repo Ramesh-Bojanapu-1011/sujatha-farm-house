@@ -233,7 +233,7 @@ export default function Home() {
       >
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img src="logo.png" alt="" className="w-15" />
+            <img src="logo.svg" alt="" className="w-15" />
             <h1 className="text-2xl font-extrabold text-green-900">
               Fresh Farm
             </h1>
