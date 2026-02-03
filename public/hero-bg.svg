@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Farm background">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="60%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#2d2a1f"/>
+    </linearGradient>
+    <linearGradient id="hill1" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2f5d3a"/>
+      <stop offset="100%" stop-color="#1f3c2a"/>
+    </linearGradient>
+    <linearGradient id="hill2" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#3f7a46"/>
+      <stop offset="100%" stop-color="#2b5d3a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <circle cx="1280" cy="160" r="120" fill="#f59e0b" opacity="0.18"/>
+  <circle cx="280" cy="200" r="90" fill="#22c55e" opacity="0.12"/>
+  <path d="M0 560 C 260 480, 520 520, 800 470 C 1080 420, 1320 440, 1600 380 L 1600 900 L 0 900 Z" fill="url(#hill1)"/>
+  <path d="M0 650 C 300 600, 600 640, 900 600 C 1200 560, 1400 580, 1600 520 L 1600 900 L 0 900 Z" fill="url(#hill2)" opacity="0.9"/>
+  <g opacity="0.25" stroke="#f5f3eb" stroke-width="2">
+    <path d="M0 700 L1600 520"/>
+    <path d="M0 760 L1600 580"/>
+    <path d="M0 820 L1600 640"/>
+  </g>
+</svg>
