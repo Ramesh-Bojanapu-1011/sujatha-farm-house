@@ -233,9 +233,7 @@ export default function Home() {
       >
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-xl bg-linear-to-br from-green-600 to-emerald-700 text-white flex items-center justify-center font-bold">
-              FF
-            </div>
+            <img src="logo.png" alt="" className="w-15" />
             <h1 className="text-2xl font-extrabold text-green-900">
               Fresh Farm
             </h1>
@@ -328,15 +326,13 @@ export default function Home() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
-            isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+          className={`md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
           onClick={closeMobileMenu}
         >
           <div
-            className={`fixed right-0 top-0 h-full w-64 bg-white shadow-2xl transform transition-transform duration-300 ${
-              isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-            }`}
+            className={`fixed right-0 top-0 h-full w-64 bg-white shadow-2xl transform transition-transform duration-300 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+              }`}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center p-6 border-b border-green-100">
@@ -785,9 +781,8 @@ export default function Home() {
                 {testimonials.map((testimonial, index) => (
                   <div
                     key={testimonial.id}
-                    className={`group relative overflow-hidden bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
-                      index === 1 ? "md:ml-6" : ""
-                    } ${index === 2 ? "md:ml-12" : ""}`}
+                    className={`group relative overflow-hidden bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${index === 1 ? "md:ml-6" : ""
+                      } ${index === 2 ? "md:ml-12" : ""}`}
                     data-aos="fade-up"
                     data-aos-delay={testimonial.delay}
                   >
@@ -916,6 +911,7 @@ export default function Home() {
                     placeholder="Your Name"
                     required
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
+                    suppressHydrationWarning
                   />
                   <input
                     type="email"
@@ -925,6 +921,7 @@ export default function Home() {
                     placeholder="Your Email"
                     required
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
+                    suppressHydrationWarning
                   />
                   <textarea
                     name="message"
@@ -934,6 +931,7 @@ export default function Home() {
                     rows={4}
                     required
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-green-500"
+                    suppressHydrationWarning
                   ></textarea>
 
                   {submitStatus === "success" && (
@@ -952,6 +950,7 @@ export default function Home() {
                     type="submit"
                     disabled={isSubmitting}
                     className="w-full bg-green-700 text-white py-3 rounded-xl font-semibold hover:bg-green-800 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    suppressHydrationWarning
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
