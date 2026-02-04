@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AOS from "aos";
 
 export default function Home() {
@@ -14,6 +14,32 @@ export default function Home() {
     "idle" | "success" | "error"
   >("idle");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isOrderOpen, setIsOrderOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<null | {
+    title: string;
+  }>(null);
+  const [orderForm, setOrderForm] = useState({
+    quantity: 1,
+    name: "",
+    mobile: "",
+    address: "",
+    paymentMethod: "cod" as "upi" | "cod",
+    utr: "",
+  });
+  const [orderStatus, setOrderStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
+
+  // Image Slider Data
+  const sliderImages = [
+    { id: 1, src: "Farm_image.png", alt: "Farm landscape" },
+    { id: 2, src: "front_gate.png", alt: "Farm animals" },
+    { id: 3, src: "chins.png", alt: "Farm produce" },
+    { id: 4, src: "goat.png", alt: "Farm sunset" },
+    { id: 5, src: "punju.png", alt: "Farm morning" },
+  ];
 
   // Products Data
   const products = [
@@ -135,7 +161,7 @@ export default function Home() {
   const testimonials = [
     {
       id: 1,
-      name: "John Smith",
+      name: "Hemanth ",
       avatar: "👨",
       avatarBg: "from-green-100 to-green-50",
       accentColor: "from-green-500",
@@ -146,7 +172,7 @@ export default function Home() {
     },
     {
       id: 2,
-      name: "Sarah Johnson",
+      name: "B V N Laskhmi",
       avatar: "👩",
       avatarBg: "from-pink-100 to-pink-50",
       accentColor: "from-pink-500",
@@ -157,7 +183,7 @@ export default function Home() {
     },
     {
       id: 3,
-      name: "Michael Brown",
+      name: "Balaji",
       avatar: "👨",
       avatarBg: "from-blue-100 to-blue-50",
       accentColor: "from-blue-500",
@@ -175,6 +201,43 @@ export default function Home() {
       offset: 80,
     });
   }, []);
+
+  useEffect(() => {
+    const target = videoRef.current;
+    if (!target || typeof IntersectionObserver === "undefined") {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            target.play().catch(() => null);
+          } else {
+            target.pause();
+          }
+        });
+      },
+      { threshold: [0.5] },
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Auto-slide images every 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) =>
+        prevIndex === sliderImages.length - 1 ? 0 : prevIndex + 1,
+      );
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [sliderImages.length]);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -224,18 +287,87 @@ export default function Home() {
     }, 0);
   };
 
+  const nextImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === sliderImages.length - 1 ? 0 : prevIndex + 1,
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? sliderImages.length - 1 : prevIndex - 1,
+    );
+  };
+
+  const goToImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
+  const openOrder = (product: { title: string }) => {
+    setSelectedProduct(product);
+    setOrderForm((prev) => ({
+      ...prev,
+      quantity: 1,
+      paymentMethod: "cod",
+      utr: "",
+    }));
+    setOrderStatus("idle");
+    setIsOrderOpen(true);
+  };
+
+  const closeOrder = () => {
+    setIsOrderOpen(false);
+  };
+
+  const handleOrderChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setOrderForm((prev) => ({
+      ...prev,
+      [name]: name === "quantity" ? Number(value) : value,
+    }));
+  };
+
+  const handleOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setOrderStatus("idle");
+
+    try {
+      if (orderForm.paymentMethod === "upi" && !orderForm.utr.trim()) {
+        setOrderStatus("error");
+        return;
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      console.log("Order submitted:", {
+        product: selectedProduct,
+        ...orderForm,
+      });
+
+      setOrderStatus("success");
+      setTimeout(() => {
+        setIsOrderOpen(false);
+      }, 1200);
+    } catch (error) {
+      console.error("Order submission failed:", error);
+      setOrderStatus("error");
+    }
+  };
+
   return (
-    <div className="min-h-screen max-w-svw bg-[#f8fbf7] text-gray-900">
+    <div className="min-h-screen    bg-[#f8fbf7] text-gray-900">
       {/* Header/Navigation */}
       <nav
-        className="bg-white/80 backdrop-blur-md border-b border-green-100 py-4 px-6 sticky top-0 z-50"
+        className="bg-white/80 backdrop-blur-md border-b border-green-100 py-4  px-6 sticky top-0 z-50"
         data-aos="fade-down"
       >
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="logo.svg" alt="" className="w-15" />
             <h1 className="text-2xl font-extrabold text-green-900">
-              Fresh Farm
+              Sujatha Farm
             </h1>
           </div>
           <ul className="hidden md:flex items-center gap-8 text-sm font-semibold">
@@ -301,9 +433,9 @@ export default function Home() {
             </li>
           </ul>
           <div className="hidden md:flex items-center gap-3">
-            <span className="text-sm text-green-800 font-medium">
-              Call: +1 (555) 123‑4567
-            </span>
+            <a href="tel:+917702274599" className="text-sm text-green-800 font-medium">
+              Call: +91 7702274599
+            </a>
             <a
               href="#contact"
               className="bg-green-700 text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-green-800 transition"
@@ -409,9 +541,9 @@ export default function Home() {
                 </li>
               </ul>
               <div className="mt-8 pt-6 border-t border-green-100">
-                <div className="text-sm text-green-800 font-medium mb-4">
-                  📞 Call: +1 (555) 123‑4567
-                </div>
+                <a href="tel:+917702274599" className="text-sm text-green-800 font-medium mb-4">
+                  📞 Call: +91 7702274599
+                </a>
                 <a
                   href="#contact"
                   className="block text-center bg-green-700 text-white px-4 py-3 rounded-full text-sm font-semibold hover:bg-green-800 transition"
@@ -583,12 +715,21 @@ export default function Home() {
                     <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-5">
                       {product.description}
                     </p>
-                    <div
+                    <a
+                      href="tel:+917702274599"
+
+                      type="button"
+                      onClick={() => {
+                        window.location.href = `tel:+917702274599`
+                        // openOrder({ title: product.title })
+                      }
+
+                      }
                       className={`mt-6 ${product.ctaColor} font-bold text-sm group-hover:translate-x-2 transition inline-flex items-center gap-1`}
                     >
                       <span>{product.cta}</span>
                       <span>→</span>
-                    </div>
+                    </a>
                   </div>
                 </div>
               ))}
@@ -650,13 +791,61 @@ export default function Home() {
                 </div>
               </div>
               <div className="relative" data-aos="fade-left">
-                <div className="rounded-3xl h-96">
-                  <img
-                    src="Farm_image.png"
-                    alt="Farm Image"
-                    className="w-full h-full object-cover rounded-3xl shadow-lg"
-                  />
+                <div className="rounded-3xl h-96 relative overflow-hidden group">
+                  {/* Main Slider Container */}
+                  <div className="relative w-full h-full">
+                    {sliderImages.map((image, index) => (
+                      <div
+                        key={image.id}
+                        className={`absolute inset-0 transition-opacity duration-500 ${index === currentImageIndex
+                          ? "opacity-100"
+                          : "opacity-0"
+                          }`}
+                      >
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-full object-cover rounded-3xl shadow-lg"
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Previous Button */}
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-900 rounded-full p-2 sm:p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                    aria-label="Previous image"
+                  >
+                    <span className="text-lg sm:text-xl">‹</span>
+                  </button>
+
+                  {/* Next Button */}
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-gray-900 rounded-full p-2 sm:p-3 shadow-lg transition-all opacity-0 group-hover:opacity-100"
+                    aria-label="Next image"
+                  >
+                    <span className="text-lg sm:text-xl">›</span>
+                  </button>
+
+                  {/* Dot Indicators */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+                    {sliderImages.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => goToImage(index)}
+                        className={`h-2 rounded-full transition-all ${index === currentImageIndex
+                          ? "bg-white w-8"
+                          : "bg-white/50 w-2 hover:bg-white/75"
+                          }`}
+                        aria-label={`Go to image ${index + 1}`}
+                      />
+                    ))}
+                  </div>
                 </div>
+
+                {/* Info Badges */}
                 <div className="absolute top-4 left-4 sm:top-8 sm:left-8 bg-white shadow-lg rounded-xl sm:rounded-2xl p-3 sm:p-5">
                   <div className="text-xs sm:text-sm text-green-700 font-semibold">
                     Farm-to-table
@@ -671,6 +860,99 @@ export default function Home() {
                   </div>
                   <div className="text-lg sm:text-2xl font-extrabold text-green-950">
                     7 AM – 6 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Video Section */}
+        <section className="py-20 px-6 bg-white" data-aos="fade-up">
+          <div className="container mx-auto">
+            <div className="text-center mb-12">
+              <h3 className="text-xs uppercase tracking-[0.3em] text-green-700 font-semibold mb-3">
+                Farm videos
+              </h3>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-green-950">
+                See the farm in action
+              </h2>
+              <p className="text-sm sm:text-base text-gray-600 mt-4 max-w-2xl mx-auto">
+                Take a quick tour of our fields, barns, and daily care routines.
+              </p>
+            </div>
+
+            {/* Video Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
+              {/* Main Video - Larger on desktop */}
+              <div className="lg:col-span-2" data-aos="fade-right" data-aos-delay="50">
+                <div className="group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl border border-green-100 hover:shadow-green-200/50 transition-all duration-300 hover:scale-[1.02]">
+                  <div className="absolute inset-0 bg-linear-to-t from-green-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+                  <video
+                    ref={videoRef}
+                    className="w-full h-full object-cover aspect-video"
+                    muted
+                    playsInline
+                    loop
+                    preload="metadata"
+                    poster="Farm_image.png"
+                  >
+                    <source src="farm-video.mp4" type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                  <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl z-20">
+                    <p className="text-sm font-bold text-green-900">Farm Overview</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Side Videos */}
+              <div className="lg:col-span-1 flex flex-col gap-6 lg:gap-8">
+                {/* Video 2 */}
+                <div data-aos="fade-left" data-aos-delay="150">
+                  <div className="group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl border border-green-100 hover:shadow-green-200/50 transition-all duration-300 hover:scale-[1.02]">
+                    <div className="absolute inset-0 bg-linear-to-t from-green-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+                    <video
+                      className="w-full h-full object-cover aspect-video"
+                      // ref={videoRef}
+                      muted
+                      playsInline
+                      loop
+                      preload="metadata"
+                      poster="chins.png"
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => e.currentTarget.pause()}
+                    >
+                      <source src="chins.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                    <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg z-20">
+                      <p className="text-xs font-bold text-green-900">Chins Care</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Video 3 */}
+                <div data-aos="fade-left" data-aos-delay="250">
+                  <div className="group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-xl border border-green-100 hover:shadow-green-200/50 transition-all duration-300 hover:scale-[1.02]">
+                    <div className="absolute inset-0 bg-linear-to-t from-green-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
+                    <video
+                      className="w-full h-full object-cover aspect-video"
+                      // ref={videoRef}
+                      muted
+                      playsInline
+                      loop
+                      preload="metadata"
+                      poster="punju.png"
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => e.currentTarget.pause()}
+                    >
+                      <source src="punju.mp4" type="video/mp4" />
+                      Your browser does not support the video tag.
+                    </video>
+                    <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg z-20">
+                      <p className="text-xs font-bold text-green-900">Hens care</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -849,7 +1131,7 @@ export default function Home() {
                         Address
                       </h4>
                       <p className="text-sm sm:text-base text-gray-600">
-                        Jarravari Palli, Pattanmitter Mandal.
+                        Jarravari Palle, Tarigonda Road
                       </p>
                     </div>
                   </div>
@@ -859,9 +1141,9 @@ export default function Home() {
                       <h4 className="font-bold text-gray-800 text-sm sm:text-base">
                         Phone
                       </h4>
-                      <p className="text-sm sm:text-base text-gray-600">
-                        +1 (555) 123-4567
-                      </p>
+                      <a href="tel:+917702274599" className="text-sm sm:text-base text-gray-600">
+                        +91 7702274599
+                      </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 sm:gap-4">
@@ -870,9 +1152,9 @@ export default function Home() {
                       <h4 className="font-bold text-gray-800 text-sm sm:text-base">
                         Email
                       </h4>
-                      <p className="text-sm sm:text-base text-gray-600">
-                        info@freshfarm.com
-                      </p>
+                      <a href="mailto:sujathafarms114@gmail.com" className="text-sm sm:text-base text-gray-600">
+                        sujathafarms114@gmail.com
+                      </a>
                     </div>
                   </div>
                   <div className="flex items-start gap-3 sm:gap-4">
@@ -882,9 +1164,7 @@ export default function Home() {
                         Hours
                       </h4>
                       <p className="text-sm sm:text-base text-gray-600">
-                        Mon-Sat: 7:00 AM - 6:00 PM
-                        <br />
-                        Sunday: 8:00 AM - 4:00 PM
+                        Morning 5:00 AM to Evening 8:00 PM
                       </p>
                     </div>
                   </div>
@@ -961,14 +1241,178 @@ export default function Home() {
         </section>
       </div>
 
+      {/* Order Modal */}
+      {isOrderOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4"
+          onClick={closeOrder}
+        >
+          <div
+            className="w-full max-h-screen overflow-auto max-w-2xl rounded-3xl bg-white shadow-2xl border border-green-100"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-5 border-b border-green-100">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-extrabold text-green-950">
+                  Complete your order
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">
+                  Product: {selectedProduct?.title}
+                </p>
+              </div>
+              <button
+                onClick={closeOrder}
+                className="text-2xl text-gray-500 hover:text-gray-700"
+                aria-label="Close order form"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form className="px-6 py-6 space-y-4" onSubmit={handleOrderSubmit}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Quantity
+                  </label>
+                  <input
+                    type="number"
+                    name="quantity"
+                    min={1}
+                    value={orderForm.quantity}
+                    onChange={handleOrderChange}
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:border-green-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Payment method
+                  </label>
+                  <select
+                    name="paymentMethod"
+                    value={orderForm.paymentMethod}
+                    onChange={handleOrderChange}
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:border-green-500"
+                    required
+                  >
+                    <option value="cod">Cash on Delivery</option>
+                    <option value="upi">UPI</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={orderForm.name}
+                    onChange={handleOrderChange}
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:border-green-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Mobile
+                  </label>
+                  <input
+                    type="tel"
+                    name="mobile"
+                    value={orderForm.mobile}
+                    onChange={handleOrderChange}
+                    className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:border-green-500"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Address
+                </label>
+                <textarea
+                  name="address"
+                  value={orderForm.address}
+                  onChange={handleOrderChange}
+                  rows={3}
+                  className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:border-green-500"
+                  required
+                />
+              </div>
+
+              {orderForm.paymentMethod === "upi" && (
+                <div className="rounded-2xl border border-green-100 bg-green-50/50 p-4">
+                  <div className="text-sm font-semibold text-green-800 mb-3">
+                    Scan to pay (UPI)
+                  </div>
+                  <div className="flex  flex-col gap-4 items-start">
+                    <img
+                      src="upi-qr.png"
+                      alt="UPI QR code"
+                      className="h-40 w-40 rounded-xl border border-green-100 bg-white object-contain"
+                    />
+                    <div className="  w-full">
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        UTR number
+                      </label>
+                      <input
+                        type="text"
+                        name="utr"
+                        value={orderForm.utr}
+                        onChange={handleOrderChange}
+                        className="w-full rounded-xl border border-gray-200 px-4 py-3 focus:outline-none focus:border-green-500"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {orderStatus === "success" && (
+                <div className="rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                  ✓ Order placed successfully!
+                </div>
+              )}
+
+              {orderStatus === "error" && (
+                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800">
+                  ✗ Please complete all required fields.
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
+                <button
+                  type="button"
+                  onClick={closeOrder}
+                  className="rounded-xl border border-gray-200 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-xl bg-green-700 px-6 py-3 text-sm font-semibold text-white hover:bg-green-800"
+                >
+                  Submit order
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Footer */}
       <footer className="bg-green-950 text-white py-12 px-6">
         <div className="container mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">Fresh Farm</h3>
+              <img src="logo.svg" alt="Fresh Farm Logo" className="w-15" />
               <p className="text-green-200">
-                Providing farmhouse‑fresh products to our community since 1970.
+                Sujatha Farm
               </p>
             </div>
             <div>
@@ -999,10 +1443,50 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-4">Our Products</h4>
               <ul className="space-y-2 text-green-200">
-                <li>Fresh Eggs</li>
-                <li>Farm Hens</li>
-                <li>Cow Milk</li>
-                <li>Quality Meat</li>
+                <li>
+                  <button
+                    onClick={() => {
+                      window.location.href = `tel:+917702274599`
+                      // openOrder({ title: "Fresh Eggs" })
+                    }}
+                    className="hover:text-white transition cursor-pointer"
+                  >
+                    Fresh Eggs
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      window.location.href = `tel:+917702274599`
+                      // openOrder({ title: "Farm Hens" })
+                    }}
+                    className="hover:text-white transition cursor-pointer"
+                  >
+                    Farm Hens
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      window.location.href = `tel:+917702274599`
+                      // openOrder({ title: "Cow Milk" })
+                    }}
+                    className="hover:text-white transition cursor-pointer"
+                  >
+                    Cow Milk
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      window.location.href = `tel:+917702274599`
+                      // openOrder({ title: "Quality Meat" })
+                    }}
+                    className="hover:text-white transition cursor-pointer"
+                  >
+                    Quality Meat
+                  </button>
+                </li>
               </ul>
             </div>
             <div>
@@ -1010,15 +1494,13 @@ export default function Home() {
               <p className="text-green-200 mb-4">
                 Subscribe to get updates on fresh products and special offers.
               </p>
-              <input
-                type="email"
-                placeholder="Your email"
-                className="w-full px-4 py-2 rounded text-gray-800 mb-2"
-                suppressHydrationWarning
-              />
+
               <button
                 className="w-full bg-green-700 px-4 py-2 rounded hover:bg-green-600 transition"
                 suppressHydrationWarning
+                onClick={() => {
+                  window.location.href = "https://www.youtube.com/@SujathaFarms-Official";
+                }}
               >
                 Subscribe
               </button>
