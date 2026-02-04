@@ -253,7 +253,13 @@ export default function Home() {
 
     try {
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await fetch("/api/send-form-sms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       console.log("Form submitted:", formData);
       setSubmitStatus("success");
@@ -920,9 +926,9 @@ export default function Home() {
                       loop
                       autoPlay
                       preload="metadata"
-                      // poster="chins.png"
-                      // onMouseEnter={(e) => e.currentTarget.play()}
-                      // onMouseLeave={(e) => e.currentTarget.pause()}
+                    // poster="chins.png"
+                    // onMouseEnter={(e) => e.currentTarget.play()}
+                    // onMouseLeave={(e) => e.currentTarget.pause()}
                     >
                       <source src="chins.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
@@ -945,9 +951,9 @@ export default function Home() {
                       loop
                       autoPlay
                       preload="metadata"
-                      // poster="punju.png"
-                      // onMouseEnter={(e) => e.currentTarget.play()}
-                      // onMouseLeave={(e) => e.currentTarget.pause()}
+                    // poster="punju.png"
+                    // onMouseEnter={(e) => e.currentTarget.play()}
+                    // onMouseLeave={(e) => e.currentTarget.pause()}
                     >
                       <source src="punju.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
