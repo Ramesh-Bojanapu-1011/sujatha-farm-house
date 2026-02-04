@@ -918,16 +918,17 @@ export default function Home() {
                       muted
                       playsInline
                       loop
+                      autoPlay
                       preload="metadata"
-                      poster="chins.png"
-                      onMouseEnter={(e) => e.currentTarget.play()}
-                      onMouseLeave={(e) => e.currentTarget.pause()}
+                      // poster="chins.png"
+                      // onMouseEnter={(e) => e.currentTarget.play()}
+                      // onMouseLeave={(e) => e.currentTarget.pause()}
                     >
                       <source src="chins.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                     <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg z-20">
-                      <p className="text-xs font-bold text-green-900">Chins Care</p>
+                      <p className="text-xs font-bold text-green-900">Chiks Care</p>
                     </div>
                   </div>
                 </div>
@@ -942,10 +943,11 @@ export default function Home() {
                       muted
                       playsInline
                       loop
+                      autoPlay
                       preload="metadata"
-                      poster="punju.png"
-                      onMouseEnter={(e) => e.currentTarget.play()}
-                      onMouseLeave={(e) => e.currentTarget.pause()}
+                      // poster="punju.png"
+                      // onMouseEnter={(e) => e.currentTarget.play()}
+                      // onMouseLeave={(e) => e.currentTarget.pause()}
                     >
                       <source src="punju.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
