@@ -367,7 +367,7 @@ export default function Home() {
       {/* Header/Navigation */}
       <nav
         className="bg-white/80 backdrop-blur-md border-b border-green-100 py-4  px-6 sticky top-0 z-50"
-        data-aos="fade-down"
+        
       >
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -469,8 +469,7 @@ export default function Home() {
           onClick={closeMobileMenu}
         >
           <div
-            className={`fixed right-0 top-0 h-full w-64 bg-white shadow-2xl transform transition-transform duration-300 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-              }`}
+            className={`fixed right-0 top-0 h-full w-64 bg-white shadow-2xl transform transition-transform duration-300 `}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center p-6 border-b border-green-100">
@@ -1458,6 +1457,7 @@ export default function Home() {
                       // openOrder({ title: "Fresh Eggs" })
                     }}
                     className="hover:text-white transition cursor-pointer"
+                    suppressHydrationWarning
                   >
                     Fresh Eggs
                   </button>
@@ -1469,6 +1469,7 @@ export default function Home() {
                       // openOrder({ title: "Farm Hens" })
                     }}
                     className="hover:text-white transition cursor-pointer"
+                    suppressHydrationWarning
                   >
                     Farm Hens
                   </button>
@@ -1480,6 +1481,7 @@ export default function Home() {
                       // openOrder({ title: "Cow Milk" })
                     }}
                     className="hover:text-white transition cursor-pointer"
+                    suppressHydrationWarning
                   >
                     Cow Milk
                   </button>
@@ -1491,6 +1493,7 @@ export default function Home() {
                       // openOrder({ title: "Quality Meat" })
                     }}
                     className="hover:text-white transition cursor-pointer"
+                    suppressHydrationWarning
                   >
                     Quality Meat
                   </button>
