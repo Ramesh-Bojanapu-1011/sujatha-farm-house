@@ -28,9 +28,9 @@ export default function Home() {
     paymentMethod: "cod" as "upi" | "cod",
     utr: "",
   });
-  const [orderStatus, setOrderStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
+  const [orderStatus, setOrderStatus] = useState<"idle" | "success" | "error">(
+    "idle",
+  );
 
   // Image Slider Data
   const sliderImages = [
@@ -39,6 +39,16 @@ export default function Home() {
     { id: 3, src: "chins.png", alt: "Farm produce" },
     { id: 4, src: "goat.png", alt: "Farm sunset" },
     { id: 5, src: "punju.png", alt: "Farm morning" },
+    {
+      id: 6,
+      src: "goat-forming.png",
+      alt: "Farm animals close-up",
+    },
+    {
+      id: 7,
+      src: "goat-forming2.png",
+      alt: "Farm animals close-up",
+    },
   ];
 
   // Products Data
@@ -326,7 +336,9 @@ export default function Home() {
   };
 
   const handleOrderChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     setOrderForm((prev) => ({
@@ -365,10 +377,7 @@ export default function Home() {
   return (
     <div className="min-h-screen    bg-[#f8fbf7] text-gray-900">
       {/* Header/Navigation */}
-      <nav
-        className="bg-white/80 backdrop-blur-md border-b border-green-100 py-4  px-6 sticky top-0 z-50"
-        
-      >
+      <nav className="bg-white/80 backdrop-blur-md border-b border-green-100 py-4  px-6 sticky top-0 z-50">
         <div className="container mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
             <img src="logo.svg" alt="" className="w-15" />
@@ -439,7 +448,10 @@ export default function Home() {
             </li>
           </ul>
           <div className="hidden md:flex items-center gap-3">
-            <a href="tel:+917702274599" className="text-sm text-green-800 font-medium">
+            <a
+              href="tel:+917702274599"
+              className="text-sm text-green-800 font-medium"
+            >
               Call: +91 7702274599
             </a>
             <a
@@ -464,8 +476,9 @@ export default function Home() {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
+          className={`md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${
+            isMobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
           onClick={closeMobileMenu}
         >
           <div
@@ -546,7 +559,10 @@ export default function Home() {
                 </li>
               </ul>
               <div className="mt-8 pt-6 border-t border-green-100">
-                <a href="tel:+917702274599" className="text-sm text-green-800 font-medium mb-4">
+                <a
+                  href="tel:+917702274599"
+                  className="text-sm text-green-800 font-medium mb-4"
+                >
                   📞 Call: +91 7702274599
                 </a>
                 <a
@@ -722,14 +738,11 @@ export default function Home() {
                     </p>
                     <a
                       href="tel:+917702274599"
-
                       type="button"
                       onClick={() => {
-                        window.location.href = `tel:+917702274599`
+                        window.location.href = `tel:+917702274599`;
                         // openOrder({ title: product.title })
-                      }
-
-                      }
+                      }}
                       className={`mt-6 ${product.ctaColor} font-bold text-sm group-hover:translate-x-2 transition inline-flex items-center gap-1`}
                     >
                       <span>{product.cta}</span>
@@ -802,10 +815,11 @@ export default function Home() {
                     {sliderImages.map((image, index) => (
                       <div
                         key={image.id}
-                        className={`absolute inset-0 transition-opacity duration-500 ${index === currentImageIndex
-                          ? "opacity-100"
-                          : "opacity-0"
-                          }`}
+                        className={`absolute inset-0 transition-opacity duration-500 ${
+                          index === currentImageIndex
+                            ? "opacity-100"
+                            : "opacity-0"
+                        }`}
                       >
                         <img
                           src={image.src}
@@ -840,10 +854,11 @@ export default function Home() {
                       <button
                         key={index}
                         onClick={() => goToImage(index)}
-                        className={`h-2 rounded-full transition-all ${index === currentImageIndex
-                          ? "bg-white w-8"
-                          : "bg-white/50 w-2 hover:bg-white/75"
-                          }`}
+                        className={`h-2 rounded-full transition-all ${
+                          index === currentImageIndex
+                            ? "bg-white w-8"
+                            : "bg-white/50 w-2 hover:bg-white/75"
+                        }`}
                         aria-label={`Go to image ${index + 1}`}
                       />
                     ))}
@@ -890,7 +905,11 @@ export default function Home() {
             {/* Video Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
               {/* Main Video - Larger on desktop */}
-              <div className="lg:col-span-2" data-aos="fade-right" data-aos-delay="50">
+              <div
+                className="lg:col-span-2"
+                data-aos="fade-right"
+                data-aos-delay="50"
+              >
                 <div className="group relative overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl border border-green-100 hover:shadow-green-200/50 transition-all duration-300 hover:scale-[1.02]">
                   <div className="absolute inset-0 bg-linear-to-t from-green-900/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 pointer-events-none" />
                   <video
@@ -906,7 +925,9 @@ export default function Home() {
                     Your browser does not support the video tag.
                   </video>
                   <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-xl z-20">
-                    <p className="text-sm font-bold text-green-900">Farm Overview</p>
+                    <p className="text-sm font-bold text-green-900">
+                      Farm Overview
+                    </p>
                   </div>
                 </div>
               </div>
@@ -925,15 +946,17 @@ export default function Home() {
                       loop
                       autoPlay
                       preload="metadata"
-                    // poster="chins.png"
-                    // onMouseEnter={(e) => e.currentTarget.play()}
-                    // onMouseLeave={(e) => e.currentTarget.pause()}
+                      // poster="chins.png"
+                      // onMouseEnter={(e) => e.currentTarget.play()}
+                      // onMouseLeave={(e) => e.currentTarget.pause()}
                     >
                       <source src="chins.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                     <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg z-20">
-                      <p className="text-xs font-bold text-green-900">Chiks Care</p>
+                      <p className="text-xs font-bold text-green-900">
+                        Chiks Care
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -950,15 +973,17 @@ export default function Home() {
                       loop
                       autoPlay
                       preload="metadata"
-                    // poster="punju.png"
-                    // onMouseEnter={(e) => e.currentTarget.play()}
-                    // onMouseLeave={(e) => e.currentTarget.pause()}
+                      // poster="punju.png"
+                      // onMouseEnter={(e) => e.currentTarget.play()}
+                      // onMouseLeave={(e) => e.currentTarget.pause()}
                     >
                       <source src="punju.mp4" type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                     <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg z-20">
-                      <p className="text-xs font-bold text-green-900">Hens care</p>
+                      <p className="text-xs font-bold text-green-900">
+                        Hens care
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -1070,8 +1095,9 @@ export default function Home() {
                 {testimonials.map((testimonial, index) => (
                   <div
                     key={testimonial.id}
-                    className={`group relative overflow-hidden bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${index === 1 ? "md:ml-6" : ""
-                      } ${index === 2 ? "md:ml-12" : ""}`}
+                    className={`group relative overflow-hidden bg-white p-5 sm:p-7 md:p-8 rounded-2xl sm:rounded-3xl border border-gray-100 shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl ${
+                      index === 1 ? "md:ml-6" : ""
+                    } ${index === 2 ? "md:ml-12" : ""}`}
                     data-aos="fade-up"
                     data-aos-delay={testimonial.delay}
                   >
@@ -1148,7 +1174,10 @@ export default function Home() {
                       <h4 className="font-bold text-gray-800 text-sm sm:text-base">
                         Phone
                       </h4>
-                      <a href="tel:+917702274599" className="text-sm sm:text-base text-gray-600">
+                      <a
+                        href="tel:+917702274599"
+                        className="text-sm sm:text-base text-gray-600"
+                      >
                         +91 7702274599
                       </a>
                     </div>
@@ -1159,7 +1188,10 @@ export default function Home() {
                       <h4 className="font-bold text-gray-800 text-sm sm:text-base">
                         Email
                       </h4>
-                      <a href="mailto:sujathafarms114@gmail.com" className="text-sm sm:text-base text-gray-600">
+                      <a
+                        href="mailto:sujathafarms114@gmail.com"
+                        className="text-sm sm:text-base text-gray-600"
+                      >
                         sujathafarms114@gmail.com
                       </a>
                     </div>
@@ -1418,9 +1450,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
             <div>
               <img src="logo.svg" alt="Fresh Farm Logo" className="w-15" />
-              <p className="text-green-200">
-                Sujatha Farm
-              </p>
+              <p className="text-green-200">Sujatha Farm</p>
             </div>
             <div>
               <h4 className="font-bold mb-4">Quick Links</h4>
@@ -1453,7 +1483,7 @@ export default function Home() {
                 <li>
                   <button
                     onClick={() => {
-                      window.location.href = `tel:+917702274599`
+                      window.location.href = `tel:+917702274599`;
                       // openOrder({ title: "Fresh Eggs" })
                     }}
                     className="hover:text-white transition cursor-pointer"
@@ -1465,7 +1495,7 @@ export default function Home() {
                 <li>
                   <button
                     onClick={() => {
-                      window.location.href = `tel:+917702274599`
+                      window.location.href = `tel:+917702274599`;
                       // openOrder({ title: "Farm Hens" })
                     }}
                     className="hover:text-white transition cursor-pointer"
@@ -1477,7 +1507,7 @@ export default function Home() {
                 <li>
                   <button
                     onClick={() => {
-                      window.location.href = `tel:+917702274599`
+                      window.location.href = `tel:+917702274599`;
                       // openOrder({ title: "Cow Milk" })
                     }}
                     className="hover:text-white transition cursor-pointer"
@@ -1489,7 +1519,7 @@ export default function Home() {
                 <li>
                   <button
                     onClick={() => {
-                      window.location.href = `tel:+917702274599`
+                      window.location.href = `tel:+917702274599`;
                       // openOrder({ title: "Quality Meat" })
                     }}
                     className="hover:text-white transition cursor-pointer"
@@ -1510,7 +1540,8 @@ export default function Home() {
                 className="w-full bg-green-700 px-4 py-2 rounded hover:bg-green-600 transition"
                 suppressHydrationWarning
                 onClick={() => {
-                  window.location.href = "https://www.youtube.com/@SujathaFarms-Official";
+                  window.location.href =
+                    "https://www.youtube.com/@SujathaFarms-Official";
                 }}
               >
                 Subscribe
