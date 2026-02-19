@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     apple: "logo.svg",
     shortcut: "logo.svg",
   },
+  verification: {
+    google: "U7qumKl--6Kgc-HmhotoDNClhsm-ALBznzF_DcRbZug",
+  },
 };
 
 export default function RootLayout({
